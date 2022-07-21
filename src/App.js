@@ -30,7 +30,7 @@ function App() {
 
   async function getManifests() {
     let response = await fetch(
-      "http://localhost:4001/manifests"
+      "https://backend-project-2-final-v2.herokuapp.com/manifests"
     );
     const json = await response.json();
     setManifests(manifests => manifests.concat(json));
@@ -70,7 +70,7 @@ function App() {
   
   async function getOpportunityData() {
     let response = await fetch(
-      "http://localhost:4001/opportunity"
+      "https://backend-project-2-final-v2.herokuapp.com/opportunity"
     );
     const json = await response.json();
     setOpportunityData(json);
@@ -82,7 +82,7 @@ function App() {
 
   async function getSpiritData() {
     let response = await fetch(
-      "http://localhost:4001/spirit"
+      "https://backend-project-2-final-v2.herokuapp.com/spirit"
     );
     const json = await response.json();
     setSpiritData(json);
@@ -94,7 +94,7 @@ function App() {
 
   async function getLogs() {
     let response = await fetch(
-      "http://localhost:4001/log"
+      "https://backend-project-2-final-v2.herokuapp.com/log"
     );
     const json = await response.json();
     setLog(json);
