@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 let style = ({ isActive }) => ({
-  margin: "1rem 1rem",
+  margin: "0.5rem 0.5rem",
   fontWeight: isActive ? 'bold' : 'normal',
 });
 
