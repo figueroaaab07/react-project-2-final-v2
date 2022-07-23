@@ -3,7 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 function Rovers({ manifests }) {
   let style = ({ isActive }) => ({
-    margin: "1rem 1rem",
+    margin: "0.5rem 0.5rem",
     fontWeight: isActive ? 'bold' : 'normal',
   });
 
