@@ -30,11 +30,11 @@ function Rover({ manifests, handleDateChange, date, setDate, isValidDate, setIsV
         placeholder="YYYY-MM-DD"
         value={date}
         onChange={handleDateChange}
-      /><br></br>
+      />
+      <h5>Important Note: If the date is invalid, out of range or the Rover did no take photos on that date, no selection will be displayed</h5><br></br>
       {isValidDate && (
         <>
           <h4>Select Camera</h4>
-          <h5>Important Note: If the date is invalid, out of range or the Rover did no take photos on that date, no selection will be displayed</h5>
         </>)}
       {isValidDate && (
         <div className="row">
