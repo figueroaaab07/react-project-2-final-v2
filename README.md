@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# Project 2: The Mars App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Setup and Deploying 
 
-## Available Scripts
+For this project, I created two separate repositories: one for the frontend, using create-react-app to generate starter code, and one for the backend, using a json-server template to generate the backend code. 
 
-In the project directory, you can run:
+This structure, initially recommended, facilitated the distribution of the backend on Heroku and the frontend on Netlify, once the project was completed. 
 
-### `npm start`
+## Backend: RESTful API with JSON Server 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**v1:**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Once the JSON Server was installed, I set the following Endpoints: /log, /manifests, /curiosity, /opportunity, /spirit. Subsequently, I proceeded to load the information of the Photo Manifests of the rovers: Curiosity, Opportunity and Spirit, obtained from the NASA API, separating from each Photo Manifest the summary data of the activity of the rover from the detail of the photos by sol (and corresponding earth date). 
 
-### `npm test`
+At this point it is important to point out that the Perseverance rover was not included in this version because the NASA API page referred to alternative mechanisms for obtaining the photos taken by said rover. However, when I investigated in more detail and went to the API repository, in the README.md they include the Perseverance using the same GET Request structure as the other rovers and provided additional detail on the cameras this rover has. Also, as you may have noticed in the previous screenshots for the particular case of the Curiosity rover, and of course it would apply to the Perseverance, the last available date (max_date) of photos is updated continuously since both rovers are operational on the surface of Mars, which I indicate in advance. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**v2: Present Version**
 
-### `npm run build`
+This version not only incorporates the Perseverance rover but also directly updates the state variables manifests (summary manifest) and data (detail manifest) of Curiosity and Perseverance with the information obtained through the GET Request Fetch to the NASA API, which allows to have the ranges of dates and details continuously updated. The Curiosity data endpoint is maintained and the Perseverance endpoint is incorporated without data in the db.json for reasons of compatibility with the rest of the components.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Single Page Application (SPA) and React 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Traditionally the method used when changing something on a web page is to load new pages entirely. Today’s websites, especially Single Page Applications (SPAs), use client-side routing to route to resources that load part of the program or structurally change the entire view of the application when an action is performed, such as clicking a link or detecting changes to an input. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+When we create a project, we will have an index.html file in the public folder. All the code we write in our App component, which acts as the root component, is rendered in this HTML file. Therefore, there is only one HTML file in which our code will be processed. So as a single page app, when you navigate to a new component using React Router, the index.html will be rewritten with the component logic. 
 
-### `npm run eject`
+## Components and index.js File 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+_**index.js:**_
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+It is the entry point of our applications in JavaScript. Inside it the BrowserRouter component is wrapped around our App component which allows us to use the Route component and other React Router components anywhere in our app. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+_**App.js:**_
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+App component contains:  
 
-## Learn More
+* The state variables that we will be using 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* The GET requests lookup functions to the db.json endpoints, called within the useEffect hook, including their loading into the corresponding state variable 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* The callback function used by the Rover component. Once the date input change event is detected, the state variables: cameraSelected, photos, and isValidDate are reset, the length of the input date is checked, and the input is validated against the relevant state variable that stores the detail manifest of the rover, establishing if in addition to being a valid date, there is a camera that took a photo that day 
 
-### Code Splitting
+* The callback function used by the Camera component. Once the camera selection event is detected, the URL used by the GET Request Fetch is built by incorporating the selected rover, the valid date and the selected camera. The photo state variable is updated with all image URLs 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* The definition of the routes. In total there are 6 Client Side Routes including the nested Route `:roverId` whose value is the name of each rover  
 
-### Analyzing the Bundle Size
+_**NavBar.js:**_
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+NavBar is a shared component that inserts common content on all pages, such as a navigation menu. The NavBar component has `<NavLink>`, it is used to set the URL and keep track of browsing history. 
 
-### Making a Progressive Web App
+_**Home.js:**_
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+_**v1:**_
+Home component renders an image of the planet Mars and displays the following message: "The Opportunity to see Mars, rejoices the Spirit and arouses the Curiosity"
 
-### Advanced Configuration
+_**v2:**_
+The message is changed to the following: "With Perseverance one obtains the Opportunity to see Mars, rejoices the Spirit and arouses Curiosity"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+_**About.js:**_ 
 
-### Deployment
+_**v1:**_
+About component renders an information table of the cameras that the Curiosity, Opportunity and Spirit rovers have, as well as cards with the main characteristics of the rovers missions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+_**v2:**_
+It incorporates a table with the cameras specifically for the Perseverance rover, as well as reference images of the location of the cameras on the rovers. Also, credit is given that all this information comes from NASA
 
-### `npm run build` fails to minify
+_**Rovers.js:**_
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Rovers component generates a second navigation bar with the names of each rover 
+
+_**Rover.js:**_
+
+_**v1:**_ Rover component uses the useParams hook to obtain the name of the selected rover from the route and thus determine the corresponding manifest summary, and the useLocation hook to detect route location changes and proceed to reset the corresponding state variables 
+
+Subsequently, this component proceeds to render a controlled input field where the user enters the desired date. Once it determines that the date is valid after invoking the callback function, there are cameras that took photos that day, it proceeds to call the Camera component, to render the valid options, and the Photos component for proper processing
+
+_**v2:**_ The explanatory note on the reasons for not displaying camera options is placed prior to the validation of the valid date so that it can be observed on all occasions
+
+_**Camera.js:**_
+
+Camera component displays the valid camera options for the selected rover and day, with the user’s selection the callback function is invoked to build the GET request fetch and its execution that will bring the URLs of the images 
+
+_**Photos.js:**_
+
+Photos component extracts the id and URL of each image and delivers them to the Photo component for display and storage in the db.json 
+
+_**Photo.js:**_
+
+_**v1:**_
+Photo component is responsible for making a POST request fetch to the db.json of the id and URL of each image, as well as the display of each image
+
+_**v2:**_
+As a mechanism to correct certain erratic behaviors when performing the POST Request fetch and the subsequent update in the state variable `log`, instead of directly passing the new value, we pass a callback function
+
+_**Logger.js:**_
+
+Logger component is responsible for displaying in a table the information of the NASA ID and URL of each image shown to the user 
+
+_**NoMatch.js:**_
+
+NoMatch component displays 404 page if the URL does not exist or the URL might have been changed
+
+## Additional improvements in version 2 of the Mars App
+
+_**index.css:**_
+
+**v1:**
+No responsive design using FlexBox
+
+**v2:**
+Responsive design using FlexBox
+
+_**_redirect File:_**
+
+**v2:**
+Configured a `redirects` file, placed in the public folder, with content: `/* /index.html 200`, required by Netlify to avoid Routes errors
+
+## Links
+
+* The Mars Exploration Rovers v1 Netlify: [Mars App v1](https://serene-palmier-576e25.netlify.app/)
+
+* The Mars Exploration Rovers v2 Netlify: [Mars App v2](https://elegant-cuchufli-1029d0.netlify.app/)
