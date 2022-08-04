@@ -32,6 +32,7 @@ It is the entry point of our applications in JavaScript. Inside it the BrowserRo
 
 _**App.js:**_
 
+_**v1:**_
 App component contains:  
 
 * The state variables that we will be using 
@@ -42,7 +43,10 @@ App component contains:
 
 * The callback function used by the Camera component. Once the camera selection event is detected, the URL used by the GET Request Fetch is built by incorporating the selected rover, the valid date and the selected camera. The photo state variable is updated with all image URLs 
 
-* The definition of the routes. In total there are 6 Client Side Routes including the nested Route `:roverId` whose value is the name of each rover  
+* The definition of the routes. In total there are 6 Client Side Routes including the nested Route `:roverId` whose value is the name of each rover
+
+_**v2:**_
+As mentioned above, this release adds the Perseverance rover and directly updates the Curiosity and Perseverance state variable manifests.
 
 _**NavBar.js:**_
 
